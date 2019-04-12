@@ -1,0 +1,46 @@
+# Unfortunately, we must import the language extensions _from_ stylish-haskell's
+# config file, rather than from here
+#
+# hpack's yaml parser can handle includes, but stylish-haskell's cannot
+_stylish-haskell: !include ".stylish-haskell.yaml"
+
+# Source the commonly applied default extensions from the anchor in
+# .stylish-haskell.yaml
+default-extensions: *common-default-extensions
+
+# These are all useful options to have enabled by default
+#
+# For details on warnings: https://downloads.haskell.org/~ghc/master/users-guide/using-warnings.html
+#
+# This list was taken from https://medium.com/mercury-bank/enable-all-the-warnings-a0517bc081c3
+# (courtesy of Max Tagher)
+ghc-options:
+  - -Weverything
+  - -Wno-missing-exported-signatures # missing-exported-signatures turns off the more strict -Wmissing-signatures. See https://ghc.haskell.org/trac/ghc/ticket/14794#ticket
+  - -Wno-missing-import-lists # Requires explicit imports of _every_ function (e.g. ‘$’); too strict
+  - -Wno-missed-specialisations # When GHC can’t specialize a polymorphic function. No big deal and requires fixing underlying libraries to solve.
+  - -Wno-all-missed-specialisations # See missed-specialisations
+  - -Wno-unsafe # Don’t use Safe Haskell warnings
+  - -Wno-safe # Don’t use Safe Haskell warnings
+  - -Wno-missing-local-signatures # Warning for polymorphic local bindings; nothing wrong with those.
+  - -Wno-monomorphism-restriction # Don’t warn if the monomorphism restriction is used
+
+
+# These are the dependencies we want to be included, by default, in all of our
+# projects
+dependencies:
+  # The following libraries are shipped with GHC, it doesn't cost me anything to
+  # include all of them by default
+  - base         # Basic Haskell modules, functions, and types
+  - bytestring   # Efficient manipulation of binary objects
+  - containers   # General purpose "container-like" data structures
+  - directory    # OS-agnostic system directory functionality
+  - filepath     # OS-agnostic file/filepath functionality
+  - stm          # Transactional and concurrent types and data structures
+  - text         # Efficient manipulation of UTF-16 text
+  - time         # Time, clock, and calendar related types and functionality
+  - transformers # Concrete functor and monad transformers
+  - unix         # Access to POSIX services and functionality
+
+  # An alternative to the default Haskell Prelude
+  - protolude
